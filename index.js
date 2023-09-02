@@ -44,5 +44,5 @@ app.get('/events', eventsHandler)
 app.post('/trigger', triggerEvent)
 
 app.listen(process.env.PORT, () => {
-    console.log('Event started...')
+    console.log(`Event started on port ${process.env.PORT}...`)
 });
