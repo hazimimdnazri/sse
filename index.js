@@ -1,9 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const uuid = require('uuid')
-
 const app = express()
-const server = require('http').createServer(app)
 
 app.use(cors())
 app.use(express.json())
@@ -44,6 +42,6 @@ app.get('/', (req, res) => {res.send('The server is up and running!')})
 app.get('/events', eventsHandler)
 app.post('/trigger', triggerEvent)
 
-server.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
     console.log(`Event started on port ${process.env.PORT}...`)
 });
