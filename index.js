@@ -43,9 +43,22 @@ eventsHandler = (req, res) => {
   
 async function triggerEvent(req, res) {
     const data = req.body
-    subscribers.forEach(subscriber => subscriber.res.write(`data: ${JSON.stringify(data)}\n\n`))
+    
+    if(req.body.SECRET_KEY == process.env.SECRET_KEY){
+        delete data['SECRET_KEY']
+        subscribers.forEach(subscriber => subscriber.res.write(`data: ${JSON.stringify(data)}\n\n`))
 
-    res.json({success: true});
+        res.json({
+            success: true,
+            'message': 'Alert sent.'
+        });
+    } else {
+        res.json({
+            success: false,
+            'message': 'Opps!'
+        });
+    }
+
 }
 
 app.get('/', (req, res) => {res.send('The server is up and running!')})
