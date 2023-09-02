@@ -9,6 +9,12 @@ require('dotenv').config()
 
 let subscribers = []
 
+sendHeartbeat = (res) => {
+    setInterval(() => {
+        res.write(': ping\n\n'); // Send a comment line as a heartbeat
+    }, 10000); // Send a heartbeat every 10 seconds (adjust as needed)
+}
+
 eventsHandler = (req, res) => {
     const headers = {
         'Content-Type': 'text/event-stream',
@@ -29,6 +35,8 @@ eventsHandler = (req, res) => {
     req.on('close', () => {
         subscribers = subscribers.filter(sub => sub.id !== subscriberId)
     })
+
+    sendHeartbeat(res);
 }
   
 async function triggerEvent(req, res) {
