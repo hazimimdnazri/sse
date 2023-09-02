@@ -9,10 +9,12 @@ require('dotenv').config()
 
 let subscribers = []
 
+// Send a heartbeat every 10 seconds to keep connection alive.
 sendHeartbeat = (res) => {
     setInterval(() => {
-        res.write(': ping\n\n'); // Send a comment line as a heartbeat
-    }, 10000); // Send a heartbeat every 10 seconds (adjust as needed)
+        res.write('event: heartbeat\n');
+        res.write('data: Heartbeating\n\n');
+    }, 10000);
 }
 
 eventsHandler = (req, res) => {
