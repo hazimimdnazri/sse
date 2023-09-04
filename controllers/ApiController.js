@@ -1,32 +1,28 @@
-const express = require('express')
-const cors = require('cors')
-const uuid = require('uuid')
-const app = express()
+import { v4 } from 'uuid'
+import dotenv from 'dotenv'
 
-app.use(cors())
-app.use(express.json())
-require('dotenv').config()
+dotenv.config()
 
 let subscribers = []
-
+    
 // Send a heartbeat every 10 seconds to keep connection alive.
-sendHeartbeat = (res) => {
+const sendHeartbeat = (res) => {
     setInterval(() => {
         res.write('event: heartbeat\n');
         res.write('data: Heartbeating\n\n');
     }, 10000);
 }
 
-eventsHandler = (req, res) => {
+const eventsHandler = (req, res) => {
     const headers = {
         'Content-Type': 'text/event-stream',
         'Connection': 'keep-alive',
         'Cache-Control': 'no-cache'
     }
-  
+
     res.writeHead(200, headers)
     
-    const subscriberId = uuid.v4()
+    const subscriberId = v4()
     const subscriber = {
         id: subscriberId,
         res
@@ -40,8 +36,8 @@ eventsHandler = (req, res) => {
 
     sendHeartbeat(res);
 }
-  
-async function triggerEvent(req, res) {
+
+ const triggerEvent = async (req, res) => {
     const data = req.body
     
     if(req.body.SECRET_KEY == process.env.SECRET_KEY){
@@ -61,10 +57,7 @@ async function triggerEvent(req, res) {
 
 }
 
-app.get('/', (req, res) => {res.send('The server is up and running!')})
-app.get('/events', eventsHandler)
-app.post('/trigger', triggerEvent)
-
-app.listen(process.env.PORT, () => {
-    console.log(`Event started on port ${process.env.PORT}...`)
-});
+export const ApiController = {
+    eventsHandler,
+    triggerEvent,
+};

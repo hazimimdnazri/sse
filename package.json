@@ -2,9 +2,11 @@
   "name": "sse",
   "version": "1.0.0",
   "description": "Server-sent event",
-  "main": "index.js",
+  "main": "sse.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node sse.js"
   },
   "author": "Hazimi Md Nazri",
   "license": "ISC",

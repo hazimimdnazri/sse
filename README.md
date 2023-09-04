@@ -1,0 +1,1 @@
+Just a simple Server-Sent Event server.
