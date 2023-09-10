@@ -10,5 +10,7 @@ routes.get('/', (req, res) => {
 
 routes.get('/events', ApiController.eventsHandler)
 routes.post('/trigger', ApiController.triggerEvent)
+routes.get('*', ApiController.unknownRoute)
+routes.post('*', ApiController.unknownRoute)
 
 export default routes

@@ -37,7 +37,7 @@ const eventsHandler = (req, res) => {
     sendHeartbeat(res);
 }
 
- const triggerEvent = async (req, res) => {
+const triggerEvent = async (req, res) => {
     const data = req.body
     
     if(req.body.SECRET_KEY == process.env.SECRET_KEY){
@@ -57,7 +57,12 @@ const eventsHandler = (req, res) => {
 
 }
 
+const unknownRoute = (req, res) => {
+    res.status(404).send(":-(");
+}
+
 export const ApiController = {
     eventsHandler,
     triggerEvent,
+    unknownRoute
 };
