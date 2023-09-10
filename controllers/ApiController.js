@@ -38,23 +38,29 @@ const eventsHandler = (req, res) => {
 }
 
 const triggerEvent = async (req, res) => {
-    const data = req.body
     
-    if(req.body.SECRET_KEY == process.env.SECRET_KEY){
-        delete data['SECRET_KEY']
-        subscribers.forEach(subscriber => subscriber.res.write(`data: ${JSON.stringify(data)}\n\n`))
-
-        res.json({
-            success: true,
-            'message': 'Alert sent.'
-        });
+    const data = req.body
+    if(req.headers.accept == process.env.ACCEPT_HEADER){
+        if(req.body.SECRET_KEY == process.env.SECRET_KEY){
+            delete data['SECRET_KEY']
+            subscribers.forEach(subscriber => subscriber.res.write(`data: ${JSON.stringify(data)}\n\n`))
+    
+            res.status(200).json({
+                success: true,
+                'message': 'Alert sent.'
+            });
+        } else {
+            res.status(401).json({
+                success: false,
+                'message': 'Unauthorized.'
+            });
+        }
     } else {
-        res.json({
+        res.status(406).json({
             success: false,
-            'message': 'Opps!'
+            'message': 'Unknown header sent.'
         });
     }
-
 }
 
 const unknownRoute = (req, res) => {
